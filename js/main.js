@@ -1,0 +1,20 @@
+const T={
+en:{welcome:"Agriculture Made Easy",title:"Agriculture Made Easy",sub:"Agriculture work is now easy",desc:"Buy quality products • Solve crop problems • Get expert help",shop:"Shop Products",crop:"Crop Help",listen:"Listen",need:"What do you need help with?",buy:"Buy Products",problem:"Crop Problem",send:"Send Photo",call:"Call / WhatsApp"},
+ur:{welcome:"زراعت آسان بنائیں",title:"زراعت کا کام اب آسان",sub:"ہر کسان کے لیے آسان",desc:"اچھی مصنوعات خریدیں • فصل کے مسائل حل کریں • ماہر سے مدد لیں",shop:"زرعی مصنوعات خریدیں",crop:"فصل کی مدد",listen:"سنیں",need:"آپ کو کس چیز میں مدد چاہیے؟",buy:"چیزیں خریدیں",problem:"فصل کا مسئلہ",send:"تصویر بھیجیں",call:"کال / واٹس ایپ"},
+sd:{welcome:"زراعت آسان بڻايو",title:"زراعت جو ڪم هاڻي آسان",sub:"هر آبادگار لاءِ آسان",desc:"سٺيون شيون خريد ڪريو • فصل جا مسئلا حل ڪريو • ماهر کان مدد وٺو",shop:"زرعي شيون خريد ڪريو",crop:"فصل جي مدد",listen:"ٻڌو",need:"توهان کي ڪهڙي مدد گهرجي؟",buy:"شيون خريد ڪريو",problem:"فصل جو مسئلو",send:"تصوير موڪليو",call:"ڪال / واٽس ايپ"},
+bal:{welcome:"کشتکاری آسان کن",title:"کشتکاری ءِ کار ھن آسان انت",sub:"ھر کشتکار ءَ آسان",desc:"چیزان بخر • کشتاں ءِ مسئلہ حل کن • ماہر ءَ مدد بگیر",shop:"کشتکاری چیزان بخر",crop:"کشتاں ءِ مدد",listen:"گوش دار",need:"تئی چہ مدد ءَ لوٹیت؟",buy:"چیزان بخر",problem:"کشتاں ءِ مسئلہ",send:"تصویر بفرست",call:"فون / واٹس ایپ"},
+pa:{welcome:"ਖੇਤੀ ਆਸਾਨ ਬਣਾਓ",title:"ਖੇਤੀ ਦਾ ਕੰਮ ਹੁਣ ਆਸਾਨ",sub:"ਹਰ ਕਿਸਾਨ ਲਈ ਆਸਾਨ",desc:"ਵਧੀਆ ਸਮਾਨ ਖਰੀਦੋ • ਫਸਲ ਦੀ ਸਮੱਸਿਆ ਦੱਸੋ • ਮਾਹਰ ਦੀ ਮਦਦ ਲਓ",shop:"ਖੇਤੀ ਸਮਾਨ ਖਰੀਦੋ",crop:"ਫਸਲ ਦੀ ਮਦਦ",listen:"ਸੁਣੋ",need:"ਤੁਹਾਨੂੰ ਕਿਸ ਚੀਜ਼ ਵਿੱਚ ਮਦਦ ਚਾਹੀਦੀ ਹੈ?",buy:"ਸਮਾਨ ਖਰੀਦੋ",problem:"ਫਸਲ ਦੀ ਸਮੱਸਿਆ",send:"ਤਸਵੀਰ ਭੇਜੋ",call:"ਕਾਲ / ਵਟਸਐਪ"},
+ps:{welcome:"کرنه اسانه کړئ",title:"د کرنې کار اوس اسانه دی",sub:"د هر بزګر لپاره اسانه",desc:"ښه توکي واخلئ • د فصل ستونزه ووایاست • د متخصص مرسته واخلئ",shop:"کرنیز توکي واخلئ",crop:"د فصل مرسته",listen:"واورئ",need:"تاسو په څه کې مرسته غواړئ؟",buy:"توکي واخلئ",problem:"د فصل ستونزه",send:"انځور ولېږئ",call:"زنګ / واټس اپ"}};
+const rtl=["ur","sd","bal","ps"];
+function lang(v){let t=T[v]||T.en;document.documentElement.lang=v;document.documentElement.dir=rtl.includes(v)?"rtl":"ltr";document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t[e.dataset.t]||e.textContent);localStorage.setItem("agriLang",v)}
+function speak(text){if(!speechSynthesis){alert("Voice is not supported.");return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang=document.documentElement.lang==="ur"?"ur-PK":"en-US";speechSynthesis.speak(u)}
+function toast(x){let e=document.getElementById("toast");e.textContent=x;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2200)}
+document.addEventListener("DOMContentLoaded",()=>{
+let l=document.getElementById("language"),saved=localStorage.getItem("agriLang")||"en";l.value=saved;lang(saved);l.onchange=()=>lang(l.value);
+document.getElementById("speak").onclick=()=>speak(document.querySelector("main").innerText);document.getElementById("heroSpeak").onclick=()=>speak(document.querySelector(".hero").innerText);
+document.getElementById("down").onclick=()=>document.documentElement.style.fontSize=Math.max(14,parseFloat(getComputedStyle(document.documentElement).fontSize)-1)+"px";
+document.getElementById("up").onclick=()=>document.documentElement.style.fontSize=Math.min(24,parseFloat(getComputedStyle(document.documentElement).fontSize)+1)+"px";
+document.querySelectorAll(".add").forEach(b=>b.onclick=()=>toast(b.dataset.name+" added to cart"));
+document.querySelectorAll(".crops button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".crops button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");document.getElementById("result").textContent=b.dataset.crop==="Unknown"?"No problem. Send a clear photo or contact an expert.":"You selected "+b.dataset.crop+". Now tell us the problem or send a photo."});
+document.getElementById("file").onchange=e=>{let f=e.target.files[0];if(!f)return;let img=document.createElement("img");img.src=URL.createObjectURL(f);img.alt="Selected crop photo";document.getElementById("preview").replaceChildren(img);toast("Photo selected successfully")};
+});
